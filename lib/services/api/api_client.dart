@@ -2,9 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:lichess_prototype/controllers/tv_stream_controller.dart';
-import 'package:lichess_prototype/model/event.dart';
-import 'package:lichess_prototype/model/result.dart';
 import 'package:rest_client/rest_client.dart' as rc;
 
 import 'package:lichess_prototype/model/model.dart';
@@ -24,7 +21,6 @@ class ApiClient {
 
   List<http.Client> _httpClients = [];
   List<StreamSubscription> _streamSubs = [];
-  BehaviorSubject<rc.Response> eventStream = BehaviorSubject();
 
   //
 
@@ -65,7 +61,7 @@ class ApiClient {
       if (token != null) {
         headers['Authorization'] = 'Bearer $token';
       } else {
-        // return ApiResponse.error(401);
+        return ApiResponse.error(401);
       }
     }
 

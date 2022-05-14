@@ -4,7 +4,6 @@ import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:lichess_prototype/locator.dart';
 
 import 'package:lichess_prototype/model/model.dart';
-import 'package:lichess_prototype/model/result.dart';
 
 part 'auth_controller.g.dart';
 
