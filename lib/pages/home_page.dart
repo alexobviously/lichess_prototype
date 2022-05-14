@@ -42,7 +42,17 @@ class HomePage extends StatelessWidget {
                     variant: bp.Variant.standard(),
                     fen: state.fen,
                   );
-                  final s = g.squaresState(bp.WHITE);
+                  final sqState = g.squaresState(bp.WHITE);
+                  BoardState boardState = sqState.board;
+                  if (state.lastMove != null) {
+                    final move =
+                        sqState.size.moveFromAlgebraic(state.lastMove!);
+                    boardState = boardState.copyWith(
+                      lastFrom: move.from,
+                      lastTo: move.to,
+                    );
+                  }
+
                   return Container(
                     margin: const EdgeInsets.all(8.0),
                     padding: const EdgeInsets.all(8.0),
@@ -54,7 +64,7 @@ class HomePage extends StatelessWidget {
                           boardKey: GlobalKey(),
                           pieceSet: PieceSet.merida(),
                           theme: BoardTheme.BLUEGREY,
-                          state: s.board,
+                          state: boardState,
                         ),
                         _playerInfo(state.players.first),
                         const SizedBox(height: 10),
