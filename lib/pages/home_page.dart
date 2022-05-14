@@ -19,21 +19,6 @@ class HomePage extends StatelessWidget {
         child: Center(
           child: Column(
             children: [
-              const Text('Hi'),
-              TextButton(
-                onPressed: () => auth().login(),
-                child: const Text('login'),
-              ),
-              const SizedBox(height: 30),
-              BlocBuilder<AuthController, AuthState>(
-                builder: (context, state) {
-                  if (state.loggedIn) {
-                    return Text('Logged in as ${state.user!.username}');
-                  } else {
-                    return const Text('Not logged in');
-                  }
-                },
-              ),
               const SizedBox(height: 50),
               BlocBuilder<TvStreamController, TvStreamState?>(
                 builder: (context, state) {
