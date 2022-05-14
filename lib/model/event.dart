@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:lichess_prototype/controllers/tv_stream_controller.dart';
 import 'package:lichess_prototype/model/challenge.dart';
 import 'package:lichess_prototype/model/game.dart';
 
@@ -9,7 +10,8 @@ abstract class Event {
   const Event({required this.type});
   factory Event.fromJson(Map<String, dynamic> json) {
     // TODO: this is temporary, we can use enhanced enums when flutter 3 is stable
-    EventType type = EventType.values.firstWhere((e) => e.name == json['type']);
+    EventType type = EventType.values
+        .firstWhere((e) => e.name == (json['type'] ?? json['t']));
 
     if ([
       EventType.challenge,
@@ -25,6 +27,13 @@ abstract class Event {
         type: type,
         game: Game.fromJson(json['game']),
       );
+    } else if (type == EventType.featured) {
+      return TvFeaturedEvent(
+        TvStreamState.fromJson(json['d']),
+      );
+    } else if (type == EventType.fen) {
+      return TvFenEvent.fromJson(json['d']);
+      // return TvFenEvent.fromJson(json['d']),
     } else {
       throw Exception('Invalid event');
     }
@@ -37,9 +46,10 @@ enum EventType {
   challengeDeclined,
   gameStart,
   gameFinish,
+  featured,
+  fen,
 }
 
-@JsonSerializable()
 class ChallengeEvent extends Event {
   final Challenge challenge;
   const ChallengeEvent({required EventType type, required this.challenge})
@@ -49,7 +59,6 @@ class ChallengeEvent extends Event {
   String toString() => 'ChallengeEvent()';
 }
 
-@JsonSerializable()
 class GameEvent extends Event {
   final Game game;
   const GameEvent({required EventType type, required this.game})
@@ -57,4 +66,36 @@ class GameEvent extends Event {
 
   @override
   String toString() => 'GameEvent()';
+}
+
+class TvFeaturedEvent extends Event {
+  final TvStreamState state;
+
+  const TvFeaturedEvent(this.state) : super(type: EventType.featured);
+
+  @override
+  String toString() => 'TvFeaturedEvent(${state.fen})';
+}
+
+@JsonSerializable()
+class TvFenEvent extends Event {
+  final String fen;
+  @JsonKey(name: 'lm')
+  final String lastMove;
+  @JsonKey(name: 'wc')
+  final num whiteClock;
+  @JsonKey(name: 'bc')
+  final num blackClock;
+
+  const TvFenEvent({
+    required this.fen,
+    required this.lastMove,
+    required this.whiteClock,
+    required this.blackClock,
+  }) : super(type: EventType.fen);
+
+  factory TvFenEvent.fromJson(Map<String, dynamic> json) =>
+      _$TvFenEventFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TvFenEventToJson(this);
 }

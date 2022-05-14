@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:lichess_prototype/controllers/tv_stream_controller.dart';
 import 'package:lichess_prototype/model/event.dart';
 import 'package:lichess_prototype/model/result.dart';
 import 'package:rest_client/rest_client.dart' as rc;
@@ -33,6 +34,11 @@ class ApiClient {
   Future<Result<EventStream>> getEventStream() => getStreamAndUnwrap(
         '/api/stream/event',
         needAuth: true,
+        unwrapper: Event.fromJson,
+      );
+
+  Future<Result<EventStream>> getTvFeed() => getStreamAndUnwrap(
+        '/api/tv/feed',
         unwrapper: Event.fromJson,
       );
 
