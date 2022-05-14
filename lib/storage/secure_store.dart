@@ -12,4 +12,7 @@ class SecureStore {
 
   Future<void> setToken(String token) async =>
       _secureStorage.write(key: SecureStoreKeys.token, value: token);
+
+  Future<void> deleteToken() async =>
+      _secureStorage.delete(key: SecureStoreKeys.token);
 }

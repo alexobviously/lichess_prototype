@@ -5,6 +5,7 @@ import 'package:lichess_prototype/controllers/auth_controller.dart';
 import 'package:lichess_prototype/controllers/tv_stream_controller.dart';
 import 'package:lichess_prototype/locator.dart';
 import 'package:lichess_prototype/model/model.dart';
+import 'package:lichess_prototype/ui/scaffold.dart';
 import 'package:squares/squares.dart';
 import 'package:square_bishop/square_bishop.dart';
 
@@ -13,7 +14,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return LichessScaffold(
       body: SafeArea(
         child: Center(
           child: Column(

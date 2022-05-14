@@ -65,6 +65,11 @@ class AuthController extends Cubit<AuthState> {
     }
   }
 
+  Future<void> logout() async {
+    emit(AuthState.initial());
+    secure().deleteToken();
+  }
+
   Future<bool> getAccount() async {
     final token = await secure().getToken();
     if (token == null) return false;
