@@ -1,8 +1,8 @@
-part of 'game.dart';
+part of 'event_game.dart';
 
 @JsonSerializable()
 @CopyWith()
-class UserGame extends Game {
+class UserGame extends EventGame {
   final String color;
   final String lastMove;
   final String source;
@@ -10,6 +10,12 @@ class UserGame extends Game {
   final bool hasMoved;
   final bool isMyTurn;
   final Opponent opponent;
+
+  int get colour => color == 'white'
+      ? Squares.white
+      : color == 'black'
+          ? Squares.black
+          : -1;
 
   const UserGame({
     required super.gameId,

@@ -10,4 +10,10 @@ extension GamesApi on ApiClient {
   List<UserGame> unwrapActiveGames(Map<String, dynamic> data) =>
       unwrapList<UserGame>(
           coerceListMSD(data['nowPlaying']), (data) => UserGame.fromJson(data));
+
+  Future<Result<bool>> makeMove(String gameId, String move) => postAndUnwrap(
+        '/api/board/game/$gameId/move/$move',
+        needAuth: true,
+        unwrapper: (data) => data['ok'],
+      );
 }

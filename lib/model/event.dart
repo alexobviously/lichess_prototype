@@ -9,6 +9,7 @@ abstract class Event {
   const Event({required this.type});
   factory Event.fromJson(Map<String, dynamic> json) {
     // TODO: this is temporary, we can use enhanced enums when flutter 3 is stable
+    // lol it's stable now you can do it
     EventType type = EventType.values
         .firstWhere((e) => e.name == (json['type'] ?? json['t']));
 
@@ -21,21 +22,29 @@ abstract class Event {
         type: type,
         challenge: Challenge.fromJson(json['challenge']),
       );
-    } else if ([EventType.gameStart, EventType.gameFinish].contains(type)) {
+    }
+    if ([EventType.gameStart, EventType.gameFinish].contains(type)) {
       return GameEvent(
         type: type,
-        game: Game.fromJson(json['game']),
+        game: EventGame.fromJson(json['game']),
       );
-    } else if (type == EventType.featured) {
+    }
+    if (type == EventType.featured) {
       return TvFeaturedEvent(
         TvStreamState.fromJson(json['d']),
       );
-    } else if (type == EventType.fen) {
+    }
+    if (type == EventType.fen) {
       return TvFenEvent.fromJson(json['d']);
       // return TvFenEvent.fromJson(json['d']),
-    } else {
-      throw Exception('Invalid event');
     }
+    if (type == EventType.gameFull) {
+      return GameFullEvent(game: Game.fromJson(json));
+    }
+    if (type == EventType.gameState) {
+      return GameStateEvent(gameState: GameState.fromJson(json));
+    }
+    throw Exception('Invalid event');
   }
 }
 
@@ -47,6 +56,8 @@ enum EventType {
   gameFinish,
   featured,
   fen,
+  gameFull,
+  gameState,
 }
 
 class ChallengeEvent extends Event {
@@ -59,7 +70,7 @@ class ChallengeEvent extends Event {
 }
 
 class GameEvent extends Event {
-  final Game game;
+  final EventGame game;
   const GameEvent({required EventType type, required this.game})
       : super(type: type);
 
@@ -97,4 +108,15 @@ class TvFenEvent extends Event {
       _$TvFenEventFromJson(json);
 
   Map<String, dynamic> toJson() => _$TvFenEventToJson(this);
+}
+
+class GameFullEvent extends Event {
+  final Game game;
+  const GameFullEvent({required this.game}) : super(type: EventType.gameFull);
+}
+
+class GameStateEvent extends Event {
+  final GameState gameState;
+  const GameStateEvent({required this.gameState})
+      : super(type: EventType.gameState);
 }

@@ -1,4 +1,4 @@
-part of 'game.dart';
+part of 'event_game.dart';
 
 @JsonSerializable()
 class Opponent {

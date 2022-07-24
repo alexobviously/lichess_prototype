@@ -43,6 +43,13 @@ class ApiClient {
         unwrapper: Event.fromJson,
       );
 
+  Future<Result<EventStream>> getBoardStream(String gameId) =>
+      getStreamAndUnwrap(
+        '/api/board/game/stream/$gameId',
+        needAuth: true,
+        unwrapper: Event.fromJson,
+      );
+
   //
 
   void closeStreams() {
@@ -133,6 +140,37 @@ class ApiClient {
     }
   }
 
+  Future<ApiResponse> post(
+    String path, {
+    bool needAuth = false,
+    Map<String, dynamic>? body,
+  }) async {
+    try {
+      Map<String, String> headers = {};
+      if (needAuth) {
+        String? token = await secure().getToken();
+        if (token != null) {
+          headers['Authorization'] = 'Bearer $token';
+        } else {
+          return ApiResponse.error(401);
+        }
+      }
+
+      final req = rc.Request(
+        url: '$host$path',
+        method: rc.RequestMethod.post,
+        headers: headers,
+        body: body == null ? null : jsonEncode(body),
+      );
+      final resp = await rc.Client().execute(request: req);
+      if (resp.statusCode != 200) return ApiResponse.error(resp.statusCode);
+      return ApiResponse.ok(data: resp.body);
+    } catch (e, s) {
+      print('ApiClient.post($path), error $e\n$s');
+      return ApiResponse.error(500);
+    }
+  }
+
   Result<T> unwrapResponse<T>(ApiResponse response, Unwrapper<T> unwrapper) {
     if (!response.ok) {
       return Result.error(response.error ?? response.status.toString());
@@ -148,6 +186,15 @@ class ApiClient {
     bool needAuth = false,
   }) async =>
       unwrapResponse(await get(path, needAuth: needAuth), unwrapper);
+
+  Future<Result<T>> postAndUnwrap<T>(
+    String path, {
+    required Unwrapper<T> unwrapper,
+    bool needAuth = false,
+    Map<String, dynamic>? body,
+  }) async =>
+      unwrapResponse(
+          await post(path, needAuth: needAuth, body: body), unwrapper);
 
   List<T> unwrapList<T>(List<Map<String, dynamic>> data, Unwrapper unwrapper) =>
       data.map<T>((e) => unwrapper(e)).toList();

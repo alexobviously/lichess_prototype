@@ -1,11 +1,13 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lichess_prototype/app/router.dart';
 import 'package:lichess_prototype/controllers/active_games_controller.dart';
-import 'package:lichess_prototype/model/game/game.dart';
+import 'package:lichess_prototype/model/game/event_game.dart';
 import 'package:square_bishop/square_bishop.dart';
 import 'package:squares/squares.dart';
 import 'package:bishop/bishop.dart' as bp;
+import 'package:go_router/go_router.dart';
 
 class ActiveGamesPage extends StatefulWidget {
   const ActiveGamesPage({super.key});
@@ -78,34 +80,38 @@ class _ActiveGamesPageState extends State<ActiveGamesPage> {
       color: Colors.orange.shade300,
       fontWeight: FontWeight.w500,
     );
-    return Card(
-      child: Column(
-        children: [
-          IgnorePointer(
-            child: Board(
-              pieceSet: PieceSet.merida(),
-              theme: BoardTheme.blueGrey,
-              state: boardState,
-              animatePieces: false,
+    return GestureDetector(
+      onTap: () => context.push(Routes.game(game.gameId)),
+      child: Card(
+        child: Column(
+          children: [
+            IgnorePointer(
+              child: Board(
+                pieceSet: PieceSet.merida(),
+                theme: BoardTheme.blueGrey,
+                state: boardState,
+                animatePieces: false,
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 32, bottom: 16),
-            child: Text(
-              game.opponent.username.toUpperCase(),
-              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
+            Padding(
+              padding: const EdgeInsets.only(top: 32, bottom: 16),
+              child: Text(
+                game.opponent.username.toUpperCase(),
+                style:
+                    const TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
+              ),
             ),
-          ),
-          Text(
-            'STANDARD',
-            style: subtextStyle,
-          ),
-          const SizedBox(height: 2),
-          Text(
-            game.isMyTurn ? 'YOUR TURN' : 'WAITING FOR OPPONENT',
-            style: subtextStyle,
-          ),
-        ],
+            Text(
+              'STANDARD',
+              style: subtextStyle,
+            ),
+            const SizedBox(height: 2),
+            Text(
+              game.isMyTurn ? 'YOUR TURN' : 'WAITING FOR OPPONENT',
+              style: subtextStyle,
+            ),
+          ],
+        ),
       ),
     );
   }
