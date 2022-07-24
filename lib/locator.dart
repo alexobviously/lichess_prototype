@@ -10,7 +10,7 @@ AuthController auth() => getIt.get<AuthController>();
 SecureStore secure() => getIt.get<SecureStore>();
 
 void setUpServiceLocator() {
+  getIt.registerSingleton<SecureStore>(SecureStore());
   getIt.registerSingleton<ApiClient>(ApiClient());
   getIt.registerSingleton<AuthController>(AuthController());
-  getIt.registerSingleton<SecureStore>(SecureStore());
 }

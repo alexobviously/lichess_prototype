@@ -17,6 +17,8 @@ class ActiveGamesController extends Cubit<List<UserGame>> {
   void _handleAuthState(AuthState authState) {
     if (authState.loggedIn) {
       getActiveGames();
+    } else {
+      clear();
     }
   }
 

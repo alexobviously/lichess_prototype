@@ -24,7 +24,19 @@ class AuthController extends Cubit<AuthState> {
     init();
   }
 
-  void init() {}
+  Future<void> init() async {
+    emit(state.copyWith(working: true));
+    final token = await secure().getToken();
+    if (token != null) {
+      final ok = await getAccount();
+      if (!ok) {
+        logout();
+      } else {
+        setupEventStream();
+      }
+    }
+    emit(state.copyWith(working: false));
+  }
 
   Future<void> login() async {
     emit(state.copyWith(working: true));
@@ -46,16 +58,11 @@ class AuthController extends Cubit<AuthState> {
       );
       if (result != null) {
         print('Got accessToken ${result.accessToken}');
+        print('Expiry: ${result.accessTokenExpirationDateTime}');
         await secure().setToken(result.accessToken!);
-        // await _storage.write(key: lichessClientId, value: result.accessToken);
         await getAccount();
         emit(state.copyWith(working: false));
-        final r = await api().getEventStream();
-        if (r.ok) {
-          r.object!.listen((e) {
-            print(':: event: $e (${e.type})');
-          });
-        }
+        setupEventStream();
       } else {
         throw Exception('Could not login');
       }
@@ -79,6 +86,15 @@ class AuthController extends Cubit<AuthState> {
       return true;
     } else {
       return false;
+    }
+  }
+
+  Future<void> setupEventStream() async {
+    final r = await api().getEventStream();
+    if (r.ok) {
+      r.object!.listen((e) {
+        print(':: event: $e (${e.type})');
+      });
     }
   }
 }
