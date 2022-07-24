@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:lichess_prototype/utils/serialisation_utils.dart';
 import 'package:rest_client/rest_client.dart' as rc;
 
 import 'package:lichess_prototype/model/model.dart';

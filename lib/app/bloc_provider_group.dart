@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lichess_prototype/controllers/active_games_controller.dart';
 import 'package:lichess_prototype/controllers/auth_controller.dart';
 import 'package:lichess_prototype/controllers/tv_stream_controller.dart';
 import 'package:lichess_prototype/locator.dart';
@@ -17,6 +18,9 @@ class BlocProviderGroup extends StatelessWidget {
         ),
         BlocProvider<TvStreamController>(
           create: (_) => TvStreamController(),
+        ),
+        BlocProvider<ActiveGamesController>(
+          create: (_) => ActiveGamesController(),
         ),
       ],
       child: child,

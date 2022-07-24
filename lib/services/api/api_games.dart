@@ -9,5 +9,5 @@ extension GamesApi on ApiClient {
 
   List<UserGame> unwrapActiveGames(Map<String, dynamic> data) =>
       unwrapList<UserGame>(
-          data['nowPlaying'], (data) => UserGame.fromJson(data));
+          coerceListMSD(data['nowPlaying']), (data) => UserGame.fromJson(data));
 }
