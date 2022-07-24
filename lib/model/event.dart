@@ -1,7 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:lichess_prototype/controllers/tv_stream_controller.dart';
-import 'package:lichess_prototype/model/challenge.dart';
-import 'package:lichess_prototype/model/game.dart';
+import 'package:lichess_prototype/model/model.dart';
 
 part 'event.g.dart';
 

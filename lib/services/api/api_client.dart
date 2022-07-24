@@ -8,6 +8,7 @@ import 'package:lichess_prototype/model/model.dart';
 import 'package:lichess_prototype/locator.dart';
 import 'package:rxdart/subjects.dart';
 
+part 'api_games.dart';
 part 'api_response.dart';
 
 typedef Unwrapper<T> = T Function(Map<String, dynamic> data);
@@ -146,4 +147,7 @@ class ApiClient {
     bool needAuth = false,
   }) async =>
       unwrapResponse(await get(path, needAuth: needAuth), unwrapper);
+
+  List<T> unwrapList<T>(List<Map<String, dynamic>> data, Unwrapper unwrapper) =>
+      data.map<T>((e) => unwrapper(e)).toList();
 }

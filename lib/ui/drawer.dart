@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lichess_prototype/app/router.dart';
@@ -28,6 +31,12 @@ class _LichessDrawerState extends State<LichessDrawer> {
           List<DrawerEntry> items = [];
           if (inUserMenu) {
             items.addAll([
+              if (kDebugMode)
+                DrawerItem(
+                  icon: Icons.token,
+                  label: 'Token',
+                  onTap: () async => log(await secure().getToken() ?? ''),
+                ),
               DrawerItem(
                 icon: MdiIcons.human,
                 label: 'Profile',
