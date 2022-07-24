@@ -67,7 +67,7 @@ class _ActiveGamesPageState extends State<ActiveGamesPage> {
       fen: game.fen,
     );
     final sqState = g.squaresState(bp.Bishop.white);
-    BoardState boardState = sqState.board;
+    BoardState boardState = sqState.board.copyWith(orientation: game.colour);
     if (game.lastMove.isNotEmpty) {
       final move = sqState.size.moveFromAlgebraic(game.lastMove);
       boardState = boardState.copyWith(
