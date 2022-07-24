@@ -28,7 +28,7 @@ class HomePage extends StatelessWidget {
                     variant: bp.Variant.standard(),
                     fen: state.fen,
                   );
-                  final sqState = g.squaresState(bp.WHITE);
+                  final sqState = g.squaresState(bp.Bishop.white);
                   BoardState boardState = sqState.board;
                   if (state.lastMove != null) {
                     final move =
@@ -47,9 +47,8 @@ class HomePage extends StatelessWidget {
                       children: [
                         _playerInfo(state.players.last),
                         Board(
-                          boardKey: GlobalKey(),
                           pieceSet: PieceSet.merida(),
-                          theme: BoardTheme.BLUEGREY,
+                          theme: BoardTheme.blueGrey,
                           state: boardState,
                         ),
                         _playerInfo(state.players.first),

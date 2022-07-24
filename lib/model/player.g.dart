@@ -15,7 +15,7 @@ abstract class _$PlayerCWProxy {
 
   Player rating(num rating);
 
-  Player title(String title);
+  Player title(String? title);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Player(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -51,7 +51,7 @@ class _$PlayerCWProxyImpl implements _$PlayerCWProxy {
   Player rating(num rating) => this(rating: rating);
 
   @override
-  Player title(String title) => this(title: title);
+  Player title(String? title) => this(title: title);
 
   @override
 
@@ -85,10 +85,10 @@ class _$PlayerCWProxyImpl implements _$PlayerCWProxy {
           ? _value.rating
           // ignore: cast_nullable_to_non_nullable
           : rating as num,
-      title: title == const $CopyWithPlaceholder() || title == null
+      title: title == const $CopyWithPlaceholder()
           ? _value.title
           // ignore: cast_nullable_to_non_nullable
-          : title as String,
+          : title as String?,
     );
   }
 }

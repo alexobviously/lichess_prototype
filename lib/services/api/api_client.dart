@@ -24,8 +24,11 @@ class ApiClient {
 
   //
 
-  Future<Result<User>> getProfile() async =>
+  Future<Result<User>> getAccount() =>
       getAndUnwrap('/api/account', unwrapper: User.fromJson, needAuth: true);
+
+  Future<Result<User>> getProfile(String username) =>
+      getAndUnwrap('/api/user/$username', unwrapper: User.fromJson);
 
   Future<Result<EventStream>> getEventStream() => getStreamAndUnwrap(
         '/api/stream/event',

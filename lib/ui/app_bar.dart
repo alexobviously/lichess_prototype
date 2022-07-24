@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 class LichessAppBar extends StatelessWidget implements PreferredSizeWidget {
-  LichessAppBar({Key? key}) : super(key: key);
+  final Widget? header;
+  const LichessAppBar({super.key, this.header});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: const Text('lichess.org'),
+      title: header ?? const Text('lichess.org'),
     );
   }
 

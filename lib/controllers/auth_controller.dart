@@ -73,7 +73,7 @@ class AuthController extends Cubit<AuthState> {
   Future<bool> getAccount() async {
     final token = await secure().getToken();
     if (token == null) return false;
-    Result<User> user = await api().getProfile();
+    Result<User> user = await api().getAccount();
     if (user.ok) {
       emit(state.copyWith(user: user.object!));
       return true;

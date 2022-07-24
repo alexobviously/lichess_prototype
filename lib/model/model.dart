@@ -3,4 +3,4 @@ export 'event.dart';
 export 'game.dart';
 export 'player.dart';
 export 'result.dart';
-export 'user.dart';
+export 'user/user.dart';

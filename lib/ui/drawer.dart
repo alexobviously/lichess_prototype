@@ -31,7 +31,7 @@ class _LichessDrawerState extends State<LichessDrawer> {
               DrawerItem(
                 icon: MdiIcons.human,
                 label: 'Profile',
-                onTap: () {},
+                onTap: () => context.go(Routes.profile),
               ),
               DrawerItem(
                 icon: MdiIcons.chessPawn,

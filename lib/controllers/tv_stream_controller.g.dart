@@ -119,7 +119,7 @@ Map<String, dynamic> _$TvStreamStateToJson(TvStreamState instance) =>
     <String, dynamic>{
       'id': instance.id,
       'orientation': instance.orientation,
-      'players': instance.players,
+      'players': instance.players.map((e) => e.toJson()).toList(),
       'fen': instance.fen,
       'lm': instance.lastMove,
     };
